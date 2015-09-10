@@ -15,16 +15,16 @@ class Expression
     if addop? @look
       value = 0
     else
-      value = get_number
+      value = term
     end
     while addop?(@look)
       case @look
       when '+'
         match('+')
-        value += get_number
+        value += term
       when '-'
         match('-')
-        value -= get_number
+        value -= term
       end
     end
     value
@@ -62,10 +62,13 @@ class Expression
     end
 
     def get_number
+      value = 0
       expected('integer') if !digit?(@look)
-      result = @look.to_i
-      get_char
-      result
+      while digit?(@look)
+        value = 10 * value + @look.to_i
+        get_char
+      end
+      value
     end
 
     def get_name
@@ -75,10 +78,25 @@ class Expression
       result
     end
 
+    def term
+      value = get_number
+      while ['*', '/'].include? @look
+        case @look
+        when '*'
+          match('*')
+          value = value * get_number
+        when '/'
+          match('/')
+          value = value / get_number
+        end
+      end
+      value
+    end
+
     def init
       @input = @input.split('')
       get_char
     end
 end
-test = Expression.new("2+3").calculate
+test = Expression.new("23-3*2/4").calculate
 puts test
