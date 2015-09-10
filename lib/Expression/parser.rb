@@ -8,26 +8,10 @@ class Expression
     @opt = options
     @look = nil
   end
-  public
 
-  def calculate
+  def eval
     init
-    if addop? @look
-      value = 0
-    else
-      value = term
-    end
-    while addop?(@look)
-      case @look
-      when '+'
-        match('+')
-        value += term
-      when '-'
-        match('-')
-        value -= term
-      end
-    end
-    value
+    calculate
   end
 
 
@@ -78,25 +62,55 @@ class Expression
       result
     end
 
+    def factor
+      if @look == '('
+        match('(')
+        value = calculate
+        match(')')
+      else
+        value = get_number
+      end
+      value
+    end
+
+    def calculate
+      if addop? @look
+        value = 0
+      else
+        value = term
+      end
+      while addop?(@look)
+        case @look
+        when '+'
+          match('+')
+          value += term
+        when '-'
+          match('-')
+          value -= term
+        end
+      end
+      value
+    end
+
     def term
-      value = get_number
+      value = factor
       while ['*', '/'].include? @look
         case @look
         when '*'
           match('*')
-          value = value * get_number
+          value = value * factor
         when '/'
           match('/')
-          value = value / get_number
+          value = value / factor
         end
       end
       value
     end
 
     def init
-      @input = @input.split('')
+      @input = @input.split('') if @input.is_a? String
       get_char
     end
 end
-test = Expression.new("23-3*2/4").calculate
+test = Expression.new("919-470").eval
 puts test
