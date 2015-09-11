@@ -20,9 +20,9 @@ class Expression
   private
 
     def expected(msg)
-      raise(InvalidInput, "\a#{msg} Expected")
+      raise(InvalidInput, "\a\"#{msg}\" Expected")
     end
-
+    
     def factor
       if @look == '('
         match('(')
@@ -98,10 +98,10 @@ class Expression
     end
 
     def init
-      @input = @input.split('')
+      @input = @input.downcase.split('')
       get_char
       skip_white
     end
 end
-test = Expression.new("9g+3").eval
+test = Expression.new(gets.chomp).eval
 puts test
