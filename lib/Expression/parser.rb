@@ -59,14 +59,11 @@ class Expression
 
     def ident
       value = factor
-      while ['^', '!'].include? @look
+      while  @look == '^'
         case @look
         when '^'
           match('^')
           value **= factor
-        when '!'
-          match('!')
-          warn "Warning: factorial not implemented yet"
         end
       end
       value
