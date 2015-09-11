@@ -22,6 +22,10 @@ class Expression
       end
     end
 
+    def match_all(string)
+      string.each_char { |x| match(x) }
+    end
+
     def skip_white
       while @look =~ /\s/
         get_char

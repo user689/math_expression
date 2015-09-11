@@ -22,7 +22,7 @@ class Expression
     def expected(msg)
       raise(InvalidInput, "\a\"#{msg}\" Expected")
     end
-    
+
     def factor
       if @look == '('
         match('(')
@@ -32,6 +32,21 @@ class Expression
         match('[')
         value = calculate
         match(']')
+      elsif [*('a'..'z')].include? @look
+        case @look
+        when 'c'
+          match_all('cos(')
+          value = Math.cos(calculate)
+        when 's'
+          match_all('sin(')
+          value = Math.sin(calculate)
+        when 't'
+          match_all('tan(')
+          value = Math.tan(calculate)
+        else
+          expected('function')
+        end
+        match(')')
       else
         value = get_number
       end
