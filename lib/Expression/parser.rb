@@ -1,13 +1,12 @@
 #!/usr/bin/env ruby -wKU
-
+include Math
 %w(getters identifiers).each {|x| require_relative x }
 
 class InvalidInput < Exception; end
 
 class Expression
-  def initialize(input, options = nil)
+  def initialize(input)
     @input = input
-    @opt = options
     @look = nil
   end
 
@@ -35,14 +34,81 @@ class Expression
       elsif [*('a'..'z')].include? @look
         case @look
         when 'c'
-          match_all('cos(')
-          value = Math.cos(calculate)
+          match_all('cos')
+          case @look
+          when 'h'
+            match_all('h(')
+            value = cosh(calculate)
+          when '('
+            match('(')
+            value = cos(calculate)
+          else
+            expected('cos() or cosh()')
+          end
         when 's'
-          match_all('sin(')
-          value = Math.sin(calculate)
+          match_all('sin')
+          case @look
+          when 'h'
+            match_all('h(')
+            value = sinh(calculate)
+          when '('
+            match('(')
+            value = sin(calculate)
+          else
+            expected('sin() or sinh()')
+          end
         when 't'
-          match_all('tan(')
-          value = Math.tan(calculate)
+          match_all('tan')
+          case @look
+          when 'h'
+            match_all('h(')
+            value = tanh(calculate)
+          when '('
+            match('(')
+            value = tan(calculate)
+          else
+            expected('tan() or tanh()')
+          end
+        when 'a'
+          match_all('arc')
+          case @look
+          when 'c'
+            match_all('cos')
+            case @look
+            when 'h'
+              match_all('h(')
+              value = acosh(calculate)
+            when '('
+              match('(')
+              value = acos(calculate)
+            else
+              expected('acos() or acosh()')
+            end
+          when 's'
+            match_all('sin')
+            case @look
+            when 'h'
+              match_all('h(')
+              value = asinh(calculate)
+            when '('
+              match('(')
+              value = asin(calculate)
+            else
+              expected('asin() or asinh()')
+            end
+          when 't'
+            match_all('tan')
+            case @look
+            when 'h'
+              match_all('h(')
+              value = atanh(calculate)
+            when '('
+              match('(')
+              value = atan(calculate)
+            else
+              expected('atan() or atanh()')
+            end
+          end
         else
           expected('function')
         end
@@ -86,6 +152,7 @@ class Expression
           match('!')
           temp = value.downto(1).inject(:*)
           value = temp
+
         end
       end
       value
