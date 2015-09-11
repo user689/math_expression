@@ -59,7 +59,7 @@ class Expression
 
     def ident
       value = factor
-      while  %w{! @ # $ % ^ &}.include? @look
+      while  %w{! % ^}.include? @look
         case @look
         when '^'
           match('^')
@@ -67,8 +67,10 @@ class Expression
         when '%'
           match '%'
           value = value % factor
-        else
-          raise InvalidInput, "Unexpected input"
+        when '!'
+          match('!')
+          temp = value.downto(1).inject(:*)
+          value = temp
         end
       end
       value
@@ -101,5 +103,5 @@ class Expression
       skip_white
     end
 end
-test = Expression.new("(2*3)@^2").eval
+test = Expression.new("9g+3").eval
 puts test
