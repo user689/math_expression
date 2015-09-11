@@ -28,6 +28,10 @@ class Expression
         match('(')
         value = calculate
         match(')')
+      elsif @look == '['
+        match('[')
+        value = calculate
+        match(']')
       else
         value = get_number
       end
@@ -53,17 +57,32 @@ class Expression
       value
     end
 
-    def term
+    def ident
       value = factor
+      while ['^', '!'].include? @look
+        case @look
+        when '^'
+          match('^')
+          value **= factor
+        when '!'
+          match('!')
+          warn "Warning: factorial not implemented yet"
+        end
+      end
+      value
+    end
+
+    def term
+      value = ident
       while ['*', '/'].include? @look
         case @look
         when '*'
           match('*')
-          value = value * factor
+          value *= ident
         when '/'
           match('/')
           numerator = value
-          denomenator = factor
+          denomenator = ident
           if denomenator == 0
             raise ZeroDivisionError,"Can't divide #{numerator} by zero"
           else
@@ -80,5 +99,5 @@ class Expression
       skip_white
     end
 end
-test = Expression.new("3+1/(1-1)").eval
+test = Expression.new("(2*3)^2!").eval
 puts test
