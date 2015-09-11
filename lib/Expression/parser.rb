@@ -59,11 +59,16 @@ class Expression
 
     def ident
       value = factor
-      while  @look == '^'
+      while  %w{! @ # $ % ^ &}.include? @look
         case @look
         when '^'
           match('^')
           value **= factor
+        when '%'
+          match '%'
+          value = value % factor
+        else
+          raise InvalidInput, "Unexpected input"
         end
       end
       value
@@ -96,5 +101,5 @@ class Expression
       skip_white
     end
 end
-test = Expression.new("(2*3)^2!").eval
+test = Expression.new("(2*3)@^2").eval
 puts test
