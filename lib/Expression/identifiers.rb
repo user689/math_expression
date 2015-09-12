@@ -88,7 +88,13 @@ class Expression
           value = log(calculate)
         when 'o'
           match_all('og')
-          base = get_number
+          if digit? @look
+            base = get_number
+          elsif @look == "("
+            base = 10
+          else
+            expected("integer or ( ")
+          end
           match('(')
           value = log(calculate, base)
         else

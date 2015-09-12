@@ -8,7 +8,7 @@ class Expression
     def get_number
       value = 0
       nb_decimals = false
-      expected('integers') if (!digit?(@look) && @look != '.')
+      expected('integer') if (!digit?(@look) && @look != '.')
       while (digit?(@look) || @look == '.')
         if @look == '.'
           match '.'

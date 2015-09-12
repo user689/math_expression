@@ -3,15 +3,18 @@ include Math
 %w(getters identifiers).each {|x| require_relative x }
 
 class InvalidInput < Exception; end
+class IndeterminedForm < Exception; end
 
 class Expression
   def initialize
     @input = nil
+    @arr = nil
     @look = nil
   end
 
   def eval(input)
     @input = input
+    @arr = @input
     init
     temp = calculate
     unless @look.nil?
@@ -24,7 +27,7 @@ class Expression
   private
 
     def expected(msg)
-      raise(InvalidInput, "\a\"#{msg}\" expected")
+      raise InvalidInput, "\a\"#{msg}\" expected"
     end
 
     def factor
@@ -100,7 +103,7 @@ class Expression
           numerator = value
           denomenator = ident
           if denomenator == 0
-            raise ZeroDivisionError,"Can't divide #{numerator} by zero"
+            raise IndeterminedForm, "Division by zero is undefined"
           else
             value = numerator.to_f / denomenator
           end
