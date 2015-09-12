@@ -46,16 +46,22 @@ class Expression
           expected('cos() or cosh()')
         end
       when 's'
-        match_all('sin')
-        case @look
-        when 'h'
-          match_all('h(')
-          value = sinh(calculate)
-        when '('
-          match('(')
-          value = sin(calculate)
+        match('s')
+        if @look == 'q'
+          match_all('qrt(')
+          value = sqrt(calculate)
         else
-          expected('sin() or sinh()')
+          match_all('in')
+          case @look
+          when 'h'
+            match_all('h(')
+            value = sinh(calculate)
+          when '('
+            match('(')
+            value = sin(calculate)
+          else
+            expected('sin() or sinh()')
+          end
         end
       when 't'
         match_all('tan')
@@ -69,6 +75,23 @@ class Expression
         else
           expected('tan() or tanh()')
         end
+      when 'l'
+        match('l')
+        case @look
+        when 'n'
+          match_all('n(')
+          value = log(calculate)
+        when 'o'
+          match_all('og')
+          base = get_number
+          match('(')
+          value = log(calculate, base)
+        else
+          expected('ln() or log()')
+        end
+      when 'e'
+        match_all('exp(')
+        value = exp(calculate)
       when 'a'
         match_all('arc')
         case @look
@@ -82,7 +105,7 @@ class Expression
             match('(')
             value = acos(calculate)
           else
-            expected('acos() or acosh()')
+            expected('arccos() or arccosh()')
           end
         when 's'
           match_all('sin')
@@ -94,7 +117,7 @@ class Expression
             match('(')
             value = asin(calculate)
           else
-            expected('asin() or asinh()')
+            expected('arcsin() or arcsinh()')
           end
         when 't'
           match_all('tan')
@@ -106,7 +129,7 @@ class Expression
             match('(')
             value = atan(calculate)
           else
-            expected('atan() or atanh()')
+            expected('arctan() or arctanh()')
           end
         end
       else
@@ -115,5 +138,5 @@ class Expression
       match(')')
       value
     end
-    
+
 end

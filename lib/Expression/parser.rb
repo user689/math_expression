@@ -3,7 +3,6 @@ include Math
 %w(getters identifiers).each {|x| require_relative x }
 
 class InvalidInput < Exception; end
-class IndeterminedForm < Exception; end
 
 class Expression
   def initialize
@@ -77,8 +76,13 @@ class Expression
           value = value % factor
         when '!'
           match('!')
-          temp = (1..value).reduce(1, :*)
-          value = temp
+          str = value.to_s.split(".")
+          if str[1] == "0" || str.size == 1
+            temp = (1..value).reduce(1, :*)
+            value = temp
+          else
+            raise InvalidInput, "Factorial is not defined for floats"
+          end
         end
       end
       value
@@ -112,10 +116,7 @@ class Expression
     end
 end
 test = Expression.new
-while true
-  num1 = rand(1..9)
-  num2 = rand(1..9)
-  ops = %w(+ - * /).sample
-  print "#{num1} #{ops} #{num2} = "
-  puts test.eval("#{num1} #{ops} #{num2}")
+loop do
+print ">> "
+puts "=> #{test.eval(gets)}"
 end
