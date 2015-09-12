@@ -7,20 +7,29 @@ class Expression
 
     def get_number
       value = 0
-      expected('integer') if !digit?(@look)
-      while digit?(@look)
-        value = 10 * value + @look.to_i
-        get_char
-        skip_white
+      nb_decimals = false
+      expected('integers') if (!digit?(@look) && @look != '.')
+      while (digit?(@look) || @look == '.')
+        if @look == '.'
+          match '.'
+          if nb_decimals
+            expected "integer"
+          end
+          nb_decimals = 1
+        else
+          if nb_decimals
+            nb_decimals *= 10
+            value = value + @look.to_f / nb_decimals
+            get_char
+            skip_white
+          else
+            value = 10 * value + @look.to_i
+            get_char
+            skip_white
+          end
+        end
       end
       value
-    end
-
-    def get_name
-      expected('alphabet') if !alpha?(@look)
-      result = @look
-      get_char
-      result
     end
 
 end

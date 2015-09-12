@@ -3,26 +3,33 @@ include Math
 %w(getters identifiers).each {|x| require_relative x }
 
 class InvalidInput < Exception; end
+class IndeterminedForm < Exception; end
 
 class Expression
-  def initialize(input)
-    @input = input
+  def initialize
+    @input = nil
     @look = nil
   end
 
-  def eval
+  def eval(input)
+    @input = input
     init
-    calculate
+    temp = calculate
+    unless @look.nil?
+      raise InvalidInput, "unexpected input: \"#{@look}\""
+    end
+    temp
   end
 
 
   private
 
     def expected(msg)
-      raise(InvalidInput, "\a\"#{msg}\" Expected")
+      raise(InvalidInput, "\a\"#{msg}\" expected")
     end
 
     def factor
+
       if @look == '('
         match('(')
         value = calculate
@@ -31,88 +38,8 @@ class Expression
         match('[')
         value = calculate
         match(']')
-      elsif [*('a'..'z')].include? @look
-        case @look
-        when 'c'
-          match_all('cos')
-          case @look
-          when 'h'
-            match_all('h(')
-            value = cosh(calculate)
-          when '('
-            match('(')
-            value = cos(calculate)
-          else
-            expected('cos() or cosh()')
-          end
-        when 's'
-          match_all('sin')
-          case @look
-          when 'h'
-            match_all('h(')
-            value = sinh(calculate)
-          when '('
-            match('(')
-            value = sin(calculate)
-          else
-            expected('sin() or sinh()')
-          end
-        when 't'
-          match_all('tan')
-          case @look
-          when 'h'
-            match_all('h(')
-            value = tanh(calculate)
-          when '('
-            match('(')
-            value = tan(calculate)
-          else
-            expected('tan() or tanh()')
-          end
-        when 'a'
-          match_all('arc')
-          case @look
-          when 'c'
-            match_all('cos')
-            case @look
-            when 'h'
-              match_all('h(')
-              value = acosh(calculate)
-            when '('
-              match('(')
-              value = acos(calculate)
-            else
-              expected('acos() or acosh()')
-            end
-          when 's'
-            match_all('sin')
-            case @look
-            when 'h'
-              match_all('h(')
-              value = asinh(calculate)
-            when '('
-              match('(')
-              value = asin(calculate)
-            else
-              expected('asin() or asinh()')
-            end
-          when 't'
-            match_all('tan')
-            case @look
-            when 'h'
-              match_all('h(')
-              value = atanh(calculate)
-            when '('
-              match('(')
-              value = atan(calculate)
-            else
-              expected('atan() or atanh()')
-            end
-          end
-        else
-          expected('function')
-        end
-        match(')')
+      elsif alpha? @look
+        value = trig
       else
         value = get_number
       end
@@ -150,9 +77,8 @@ class Expression
           value = value % factor
         when '!'
           match('!')
-          temp = value.downto(1).inject(:*)
+          temp = (1..value).reduce(1, :*)
           value = temp
-
         end
       end
       value
@@ -185,5 +111,11 @@ class Expression
       skip_white
     end
 end
-test = Expression.new(gets.chomp).eval
-puts test
+test = Expression.new
+while true
+  num1 = rand(1..9)
+  num2 = rand(1..9)
+  ops = %w(+ - * /).sample
+  print "#{num1} #{ops} #{num2} = "
+  puts test.eval("#{num1} #{ops} #{num2}")
+end
