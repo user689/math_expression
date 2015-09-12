@@ -63,6 +63,11 @@ class Expression
             expected('sin() or sinh()')
           end
         end
+      when 'r'
+        match_all('root')
+        base = get_number
+        match('(')
+        value = calculate ** (1.0/base)
       when 't'
         match_all('tan')
         case @look
