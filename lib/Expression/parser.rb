@@ -8,13 +8,11 @@ class IndeterminedForm < Exception; end
 class Expression
   def initialize
     @input = nil
-    @arr = nil
     @look = nil
   end
 
   def eval(input)
     @input = input
-    @arr = @input
     init
     temp = calculate
     unless @look.nil?
