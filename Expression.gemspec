@@ -4,12 +4,12 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'Expression/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "Expression"
+  spec.name          = "math_expression"
   spec.version       = Expression::VERSION
   spec.authors       = ["mhmd689"]
   spec.email         = ["b689d8@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Mathmatical expression calculator}
+  spec.summary       = %q{The gem evaluates mathmatical expressions provided as a string}
   spec.homepage      = ""
   spec.license       = "MIT"
 

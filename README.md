@@ -1,6 +1,6 @@
 # Expression
 
-TODO: Write a gem description
+Mathematical expression calculator. Use this gem as a calculator.
 
 ## Installation
 
@@ -18,7 +18,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Initialize a variable:
+
+    some_var = MathExpression.new
+
+and then it is just:
+
+    some_var.eval(Your_expression)
+  
 
 ## Contributing
 
