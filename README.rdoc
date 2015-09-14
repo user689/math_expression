@@ -18,6 +18,10 @@ Or install it yourself as:
 
 == Usage
 
+require the file:
+
+    require 'Expression'
+
 Initialize a variable:
 
     expr = MathExpression.new
