@@ -5,7 +5,7 @@ include Math
 class InvalidInput < Exception; end
 class IndeterminedForm < Exception; end
 
-class Expression
+class MathExpression
   def initialize
     @input = nil
     @look = nil
@@ -115,9 +115,4 @@ class Expression
       get_char
       skip_white
     end
-end
-test = Expression.new
-loop do
-print ">> "
-puts "=> #{test.eval(gets)}"
 end

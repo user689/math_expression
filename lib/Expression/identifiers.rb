@@ -1,4 +1,4 @@
-class Expression
+class MathExpression
   private
 
     def addop?(x)
