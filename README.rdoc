@@ -6,7 +6,7 @@ Mathematical expression calculator. Use this gem as a calculator.
 
 Add this line to your application's Gemfile:
 
-    gem 'Expression'
+    gem 'math_expression'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install Expression
+    $ gem install math_expression
 
 == Usage
 
