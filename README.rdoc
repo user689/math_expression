@@ -1,0 +1,95 @@
+= Expression
+
+Mathematical expression calculator. Use this gem as a calculator.
+
+== Installation
+
+Add this line to your application's Gemfile:
+
+    gem 'Expression'
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install Expression
+
+== Usage
+
+Initialize a variable:
+
+    expr = MathExpression.new
+
+and then it is just:
+
+    expr.eval(Your_expression)
+
+supported functions:
+
+* Basic arithmetics
+* exponentiation
+
+      expr.eval('6^3')
+
+* factorial
+
+      expr.eval('5!')
+* modulo operation:
+
+      expr.eval('9 % 5')
+* floating numbers
+* trigonometric identities (cos, sin, tan, cosh, sinh, tanh) and their inverses (by prefixing  any of them by 'arc' e.g: arccos)
+* exponential: (exp(x) return e to the power of x)
+
+      expr.eval('exp(2)')
+
+* logarithm:
+
+  * General: you can use <tt>log{base}(number)</tt> e.g:
+
+      expr.eval('log2(12)')
+
+returns the result of calling log of base 2 for the number 12.
+
+      expr.eval('log20(123)')
+
+etc
+
+
+* when you omit the base, the default is base 10 i.e:
+
+      expr.eval('log(23)')
+
+is the same as
+
+
+      expr.eval('log10(23)')
+
+
+* for base 'e' you can use natural logarithm:
+
+      expr.eval('ln(21)')
+
+
+* root functions:
+
+  * square root:
+
+       expr.eval('sqrt(21)')
+
+  * for other bases use <tt>root{base}(number)</tt>:
+
+       expr.eval('root3(12)')
+
+
+
+
+== Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
