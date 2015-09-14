@@ -6,7 +6,7 @@ class InvalidInput < Exception; end
 class IndeterminedForm < Exception; end
 
 class MathExpression
-  def initialize
+  def initialize()
     @input = nil
     @look = nil
   end
@@ -116,3 +116,5 @@ class MathExpression
       skip_white
     end
 end
+
+# puts MathExpression.new().eval(gets)
